@@ -11,7 +11,6 @@ public class Client {
         int port = Integer.parseInt(args[0]);
 
         try {
-            // Спочатку знаходимо сервер через UDP broadcast
             DatagramSocket udpSocket = new DatagramSocket();
             udpSocket.setBroadcast(true);
 
@@ -20,12 +19,10 @@ public class Client {
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcastAddress, port);
             udpSocket.send(sendPacket);
 
-            // Очікуємо відповідь від сервера
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             udpSocket.receive(receivePacket);
 
-            // Підключаємося до сервера через TCP
             Socket tcpSocket = new Socket(receivePacket.getAddress(), port);
             PrintWriter out = new PrintWriter(tcpSocket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(tcpSocket.getInputStream()));
